@@ -1,7 +1,6 @@
 import { Router } from "express";
 
 const router = Router();
-application.use(XPathExpression.json());
 
 // GET endpoint
 router.get("/", (req, res) => {
@@ -13,10 +12,11 @@ router.get("/", (req, res) => {
 
 // POST endpoint med session
 router.post("/", (req, res) => {
-    req.session.housingMarket = req.session.housingMarket || [];
-    req.session.housingMarket.push(req.body);
+  req.session.housingMarket = req.session.housingMarket || [];
+  req.session.housingMarket.push(req.body);
 
-  res.send({ data: req.session.housingMarket
+  res.send({
+    data: req.session.housingMarket,
   });
 });
 
