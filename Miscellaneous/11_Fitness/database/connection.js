@@ -8,3 +8,8 @@ const connection = await open({
 });
 
 export default connection;
+
+//Se statemen til -- det her er ikke færdigt
+//db.all (SELECT)
+//db.run
+//db.exec

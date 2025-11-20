@@ -1,42 +1,39 @@
 import db from "./connection.js";
 
-//Hvad kan vi lave af queries?
-
-// db.exec() kører DDL og DCL statements mod databasen
-// DDL - Data Definition Language - definerer strukturen af databasen (CREATE, ALTER, DROP)
-// DCL - Data Control Language - håndterer rettigheder (GRANT, REVOKE)
-// Meget lidt forskel på MySQL og SQLite
+// Hvilke queries kan vi lave?
 
 db.exec(`DROP TABLE IF EXISTS users;`);
-db.exec(`DROP TABLE IF EXISTS exercise;`);
+db.exec(`DROP TABLE IF EXISTS exercises;`);
 
-//FIND CONST DELETEMODE VIGTIGT
-//Package.json er et godt sted at skrive scripts
-
-// commandLine argument? --delete flag
-// argv - en liste af argumenter (Java)
-/*
-Conventions for SQL
-use lowercase
-use snake case
-use plural for tables
-*/
+// CLI argumenter
+const deleteMode = process.argv.includes("--delete");
 
 // DDL
 const DDL = `
 CREATE TABLE users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(50),
-    role TEXT CHECK( role IN ('ADMIN', 'STAFF', 'USER'))
+    role TEXT CHECK(role IN ('ADMIN', 'STAFF', 'USER'))
 );
-  
+
 CREATE TABLE exercises (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username VARCHAR(50)
+    name VARCHAR(50),
+    difficulty VARCHAR(50)
 );
 `;
 
-// Kør DDL statement
+// Kør DDL statements
 await db.exec(DDL);
 
 console.log("Database created successfully!");
+
+// DML (seeding)
+if (deleteMode) {
+  console.log("Seeding database...");
+
+  db.run(`INSERT INTO users (username, role) VALUES ('anders', 'ADMIN')`);
+  db.run(`INSERT INTO exercises (name, difficulty) VALUES ('Pushups', 'Easy')`);
+
+  console.log("Seed data inserted!");
+}
