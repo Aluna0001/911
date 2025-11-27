@@ -2,3 +2,9 @@ node_modules/
 eslint.config.mjs
 vercel.json
 .env
+
+# .gitignore indhold:
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
